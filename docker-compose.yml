@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: ./backend
+    container_name: lsd-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build: ./frontend
+    container_name: lsd-frontend
+    ports:
+      - "3000:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  db:
+    image: postgres:15
+    container_name: lsd-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: servicemesh
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
