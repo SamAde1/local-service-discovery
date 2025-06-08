@@ -6,7 +6,7 @@ class Service(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
-    url = Column(String, nullable=False)
+    url = Column(String, unique=True, nullable=False)
     icon = Column(String, default="")
     tag = Column(String, default="")
     healthy = Column(Boolean, default=True)

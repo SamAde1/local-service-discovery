@@ -21,3 +21,4 @@ def read_services(db: Session = Depends(get_db), user=Depends(get_current_user))
 @router.post("/services", response_model=schemas.Service)
 def create_service(service: schemas.ServiceCreate, db: Session = Depends(get_db)):
     return crud.create_service(db, service)
+
