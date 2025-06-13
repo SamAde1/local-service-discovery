@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
 import ServiceCard from "../components/ServiceCard";
 import ServiceForm from "../components/ServiceForm";
+import { useAuth } from "../context/AuthContext";
 
 export default function Dashboard() {
+  const { token } = useAuth();
   const [services, setServices] = useState([]);
 
-  // Fetch services from API on page load
   useEffect(() => {
-    fetch("http://localhost:8000/api/services")
-      .then((res) => res.json())
+    fetch("http://localhost:8000/api/services", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
       .then(setServices)
       .catch(console.error);
-  }, []);
+  }, [token]);
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Local Service Discovery</h1>
-
-      <ServiceForm onServiceAdded={setServices} />
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-        {services.map((svc) => (
-          <ServiceCard key={svc.id} service={svc} />
-        ))}
-      </div>
+    <div>
+      <h1 className="text-2xl">Service List</h1>
+      <ul>
+        {services.map(svc => <li key={svc.id}>{svc.name}</li>)}
+      </ul>
     </div>
   );
 }
